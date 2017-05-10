@@ -97,7 +97,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/05/10/spark特征预处理/index.html">
 <meta property="og:site_name" content="Incer">
 <meta property="og:description" content="在LR训练之前，通常要对特征进行预处理。本文介绍了一种通过点击率分布对特征进行聚合的方法，并用spark实现。算法主要包含：   数据清洗 点击率分布计算 特征聚合   数据清洗通常数据中，有许多空值需要进行处理，并且通常需要进行采样。首先，定义了一个bool类型的函数123456789def data_sampler(line, featuresconf, sday, eday, neg_sam">
-<meta property="og:updated_time" content="2017-05-10T09:04:07.000Z">
+<meta property="og:updated_time" content="2017-05-10T09:08:48.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spark特征预处理">
 <meta name="twitter:description" content="在LR训练之前，通常要对特征进行预处理。本文介绍了一种通过点击率分布对特征进行聚合的方法，并用spark实现。算法主要包含：   数据清洗 点击率分布计算 特征聚合   数据清洗通常数据中，有许多空值需要进行处理，并且通常需要进行采样。首先，定义了一个bool类型的函数123456789def data_sampler(line, featuresconf, sday, eday, neg_sam">
@@ -175,7 +175,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">Incer's Blog</p>
+        <p class="site-subtitle">一个傻逼的啰里啰嗦</p>
       
   </div>
 
@@ -328,7 +328,7 @@
 <h2 id="数据清洗"><a href="#数据清洗" class="headerlink" title="数据清洗"></a>数据清洗</h2><p>通常数据中，有许多空值需要进行处理，并且通常需要进行采样。<br>首先，定义了一个bool类型的函数<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">data_sampler</span><span class="params">(line, featuresconf, sday, eday, neg_sampling_ratio)</span>:</span></div><div class="line">    fields = line.strip().split(<span class="string">"\t"</span>)</div><div class="line">    tag_str = fields[featuresconf[<span class="string">'inputFields'</span>].index(<span class="string">'tag'</span>)]</div><div class="line">    <span class="keyword">if</span> tag_str == <span class="string">"NULL"</span> <span class="keyword">or</span> tag_str == <span class="string">"\\N"</span> <span class="keyword">or</span> tag_str == <span class="string">""</span>:</div><div class="line">        tag_str = <span class="string">"0"</span></div><div class="line">    <span class="keyword">if</span> random() &lt; ratio:</div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div><div class="line"></div><div class="line">    <span class="keyword">return</span> <span class="keyword">False</span></div></pre></td></tr></table></figure></p>
 <p>这里是一段随机采样的函数，输出结果仅对负样本进行抽样操作。类似的，还可以对其他特征的数值进行判断，筛选出需要的特征。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sc = SparkContext(appName=<span class="string">"lr_model-prepare_data"</span>)</div><div class="line">data = sc.textFile(input_file) \</div><div class="line">                .filter(<span class="keyword">lambda</span> line: data_sampler(line, featuresconf, sday, eday, neg_sampling_ratio))</div></pre></td></tr></table></figure></p>
 <p>这里为spark调用上一个函数的例子。</p>
-
+<h3 id="未完待续"><a href="#未完待续" class="headerlink" title="未完待续"></a>未完待续</h3>
       
     </div>
 
@@ -446,7 +446,7 @@
                alt="Incer Yin" />
           <p class="site-author-name" itemprop="name">Incer Yin</p>
            
-              <p class="site-description motion-element" itemprop="description">一个傻逼的啰里啰嗦</p>
+              <p class="site-description motion-element" itemprop="description">Incer's Blog</p>
           
         </div>
         <nav class="site-state motion-element">
@@ -502,7 +502,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据清洗"><span class="nav-number">1.</span> <span class="nav-text">数据清洗</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据清洗"><span class="nav-number">1.</span> <span class="nav-text">数据清洗</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#未完待续"><span class="nav-number">1.1.</span> <span class="nav-text">未完待续</span></a></li></ol></li></ol></div>
             
 
           </div>
