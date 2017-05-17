@@ -90,16 +90,16 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="description" content="除了上文中使用的基于统计学的特征聚合方法，在本文中尝试了一种基于GBDT决策树的一种特征筛选方法。   算法原理 算法实现   算法原理GBDT(Gradient Boosting Decision Tree) 又叫 MART（Multiple Additive Regression Tree)，是一种迭代的决策树算法，该算法由多棵决策树组成，所有树的结论累加起来做最终答案。它在被提出之初就和SV">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2017/05/10/hello-world/index.html">
+<meta property="og:title" content="GBDT特征筛选">
+<meta property="og:url" content="http://yoursite.com/2017/05/17/GBDT特征筛选/index.html">
 <meta property="og:site_name" content="Incer">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
-<meta property="og:updated_time" content="2017-05-10T07:37:32.000Z">
+<meta property="og:description" content="除了上文中使用的基于统计学的特征聚合方法，在本文中尝试了一种基于GBDT决策树的一种特征筛选方法。   算法原理 算法实现   算法原理GBDT(Gradient Boosting Decision Tree) 又叫 MART（Multiple Additive Regression Tree)，是一种迭代的决策树算法，该算法由多棵决策树组成，所有树的结论累加起来做最终答案。它在被提出之初就和SV">
+<meta property="og:updated_time" content="2017-05-17T09:21:29.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="GBDT特征筛选">
+<meta name="twitter:description" content="除了上文中使用的基于统计学的特征聚合方法，在本文中尝试了一种基于GBDT决策树的一种特征筛选方法。   算法原理 算法实现   算法原理GBDT(Gradient Boosting Decision Tree) 又叫 MART（Multiple Additive Regression Tree)，是一种迭代的决策树算法，该算法由多棵决策树组成，所有树的结论累加起来做最终答案。它在被提出之初就和SV">
 
 
 
@@ -127,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/05/10/hello-world/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/05/17/GBDT特征筛选/"/>
 
 
 
 
 
-  <title>Hello World | Incer</title>
+  <title>GBDT特征筛选 | Incer</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -252,7 +252,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/10/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/17/GBDT特征筛选/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Incer Yin">
@@ -269,7 +269,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hello World</h1>
+          <h1 class="post-title" itemprop="name headline">GBDT特征筛选</h1>
         
 
         <div class="post-meta">
@@ -281,8 +281,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-10T15:37:32+08:00">
-                2017-05-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-17T16:32:23+08:00">
+                2017-05-17
               </time>
             
 
@@ -316,16 +316,27 @@
       
 
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
+        <p>除了上文中使用的基于统计学的特征聚合方法，在本文中尝试了一种基于GBDT决策树的一种特征筛选方法。</p>
+<blockquote>
+<ul>
+<li>算法原理</li>
+<li>算法实现</li>
+</ul>
+</blockquote>
+<h2 id="算法原理"><a href="#算法原理" class="headerlink" title="算法原理"></a>算法原理</h2><p>GBDT(Gradient Boosting Decision Tree) 又叫 MART（Multiple Additive Regression Tree)，是一种迭代的决策树算法，该算法由多棵决策树组成，所有树的结论累加起来做最终答案。它在被提出之初就和SVM一起被认为是泛化能力较强的算法。<br>  GBDT中的树是回归树（不是分类树），GBDT用来做回归预测，调整后也可以用于分类。<br>  GBDT的思想使其具有天然优势可以发现多种有区分性的特征以及特征组合。业界中，Facebook使用其来自动发现有效的特征、特征组合，来作为LR模型中的特征，以提高 CTR预估（Click-Through Rate Prediction）的准确性（详见参考文献<a href="http://blog.csdn.net/lilyth_lilyth/article/details/48032119" target="_blank" rel="external">1</a>、<a href="https://pdfs.semanticscholar.org/daf9/ed5dc6c6bad5367d7fd8561527da30e9b8dd.pdf" target="_blank" rel="external">2</a>）；GBDT在淘宝的搜索及预测业务上也发挥了重要作用。</p>
+<h3 id="回归树算法"><a href="#回归树算法" class="headerlink" title="回归树算法"></a>回归树算法</h3><p>回归树总体流程类似于分类树，区别在于，回归树的每一个节点都会得一个预测值。以年龄为例，该预测值等于属于这个节点的所有人年龄的平均值。分枝时穷举每一个feature的每个阈值找最好的分割点，但衡量最好的标准不再是最大熵，而是最小化平方误差。也就是被预测出错的人数越多，错的越离谱，平方误差就越大，通过最小化平方误差能够找到最可靠的分枝依据。分枝直到每个叶子节点上人的年龄都唯一或者达到预设的终止条件(如叶子个数上限)，若最终叶子节点上人的年龄不唯一，则以该节点上所有人的平均年龄做为该叶子节点的预测年龄。</p>
+<h3 id="提升树算法"><a href="#提升树算法" class="headerlink" title="提升树算法"></a>提升树算法</h3><p>提升树是迭代多棵回归树来共同决策。当采用平方误差损失函数时，每一棵回归树学习的是之前所有树的结论和残差，拟合得到一个当前的残差回归树，残差的意义如公式：残差 = 真实值 - 预测值 。提升树即是整个迭代过程生成的回归树的累加。</p>
+<h4 id="算法步骤解释"><a href="#算法步骤解释" class="headerlink" title="算法步骤解释"></a>算法步骤解释</h4><blockquote>
+<ul>
+<li>初始化，估计使损失函数极小化的常数值，它是只有一个根节点的树，即ganma是一个常数值</li>
+<li>计算损失函数的负梯度在当前模型的值，将它作为残差的估计</li>
+<li>估计回归树叶节点区域，以拟合残差的近似值</li>
+<li>利用线性搜索估计叶节点区域的值，使损失函数极小化</li>
+<li>更新回归树</li>
+<li>得到输出的最终模型 f(x)</li>
+</ul>
+</blockquote>
+<h2 id="sklearn算法实现"><a href="#sklearn算法实现" class="headerlink" title="sklearn算法实现"></a>sklearn算法实现</h2>
       
     </div>
 
@@ -361,15 +372,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/05/10/spark特征预处理/" rel="next" title="spark特征预处理">
+                <i class="fa fa-chevron-left"></i> spark特征预处理
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/05/10/第一篇博客/" rel="prev" title="第一篇博客">
-                第一篇博客 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -489,7 +500,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#算法原理"><span class="nav-number">1.</span> <span class="nav-text">算法原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#回归树算法"><span class="nav-number">1.1.</span> <span class="nav-text">回归树算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提升树算法"><span class="nav-number">1.2.</span> <span class="nav-text">提升树算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#算法步骤解释"><span class="nav-number">1.2.1.</span> <span class="nav-text">算法步骤解释</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sklearn算法实现"><span class="nav-number">2.</span> <span class="nav-text">sklearn算法实现</span></a></li></ol></div>
             
 
           </div>

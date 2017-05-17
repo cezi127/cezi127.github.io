@@ -253,6 +253,137 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/17/GBDT特征筛选/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Incer Yin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Incer">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/05/17/GBDT特征筛选/" itemprop="url">GBDT特征筛选</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-17T16:32:23+08:00">
+                2017-05-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>除了上文中使用的基于统计学的特征聚合方法，在本文中尝试了一种基于GBDT决策树的一种特征筛选方法。</p>
+<blockquote>
+<ul>
+<li>算法原理</li>
+<li>算法实现</li>
+</ul>
+</blockquote>
+<h2 id="算法原理"><a href="#算法原理" class="headerlink" title="算法原理"></a>算法原理</h2><p>GBDT(Gradient Boosting Decision Tree) 又叫 MART（Multiple Additive Regression Tree)，是一种迭代的决策树算法，该算法由多棵决策树组成，所有树的结论累加起来做最终答案。它在被提出之初就和SVM一起被认为是泛化能力较强的算法。<br>  GBDT中的树是回归树（不是分类树），GBDT用来做回归预测，调整后也可以用于分类。<br>  GBDT的思想使其具有天然优势可以发现多种有区分性的特征以及特征组合。业界中，Facebook使用其来自动发现有效的特征、特征组合，来作为LR模型中的特征，以提高 CTR预估（Click-Through Rate Prediction）的准确性（详见参考文献<a href="http://blog.csdn.net/lilyth_lilyth/article/details/48032119" target="_blank" rel="external">1</a>、<a href="https://pdfs.semanticscholar.org/daf9/ed5dc6c6bad5367d7fd8561527da30e9b8dd.pdf" target="_blank" rel="external">2</a>）；GBDT在淘宝的搜索及预测业务上也发挥了重要作用。</p>
+<h3 id="回归树算法"><a href="#回归树算法" class="headerlink" title="回归树算法"></a>回归树算法</h3><p>回归树总体流程类似于分类树，区别在于，回归树的每一个节点都会得一个预测值。以年龄为例，该预测值等于属于这个节点的所有人年龄的平均值。分枝时穷举每一个feature的每个阈值找最好的分割点，但衡量最好的标准不再是最大熵，而是最小化平方误差。也就是被预测出错的人数越多，错的越离谱，平方误差就越大，通过最小化平方误差能够找到最可靠的分枝依据。分枝直到每个叶子节点上人的年龄都唯一或者达到预设的终止条件(如叶子个数上限)，若最终叶子节点上人的年龄不唯一，则以该节点上所有人的平均年龄做为该叶子节点的预测年龄。</p>
+<h3 id="提升树算法"><a href="#提升树算法" class="headerlink" title="提升树算法"></a>提升树算法</h3><p>提升树是迭代多棵回归树来共同决策。当采用平方误差损失函数时，每一棵回归树学习的是之前所有树的结论和残差，拟合得到一个当前的残差回归树，残差的意义如公式：残差 = 真实值 - 预测值 。提升树即是整个迭代过程生成的回归树的累加。</p>
+<h4 id="算法步骤解释"><a href="#算法步骤解释" class="headerlink" title="算法步骤解释"></a>算法步骤解释</h4><blockquote>
+<ul>
+<li>初始化，估计使损失函数极小化的常数值，它是只有一个根节点的树，即ganma是一个常数值</li>
+<li>计算损失函数的负梯度在当前模型的值，将它作为残差的估计</li>
+<li>估计回归树叶节点区域，以拟合残差的近似值</li>
+<li>利用线性搜索估计叶节点区域的值，使损失函数极小化</li>
+<li>更新回归树</li>
+<li>得到输出的最终模型 f(x)</li>
+</ul>
+</blockquote>
+<h2 id="sklearn算法实现"><a href="#sklearn算法实现" class="headerlink" title="sklearn算法实现"></a>sklearn算法实现</h2>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/10/spark特征预处理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -649,7 +780,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
