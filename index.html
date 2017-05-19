@@ -321,7 +321,17 @@
       
         
           
-            
+            <p>  在经过一段时间的数据积累之后，通常都会有一批种子用户留存。在dsp中，通常想对这些种子用户进行拓展。我们通过整理这批用户的行为数据，并在系统中找出行为相似的人群，这个过程叫looklike。通过looklike的过程，我们可以扩大我们的种子用户，对这些人群进行重点投放。</p>
+<blockquote>
+<ul>
+<li>算法思路</li>
+<li>算法模型</li>
+<li>算法实现</li>
+</ul>
+</blockquote>
+<h2 id="算法思路"><a href="#算法思路" class="headerlink" title="算法思路"></a>算法思路</h2><p>  以点击行为为例，用户looklike的过程其实就是一个对用户的二分类，通过用户在系统中的行为数据，将用户分类成感兴趣和不感兴趣。所以，难点主要在用户的特征选择和特征工程。<br>  首先，对用户所有的特征进行整理，浏览url内容，浏览url时间，浏览url频次，标签。<br>  然后，对用户的数据进行类似上文的清理和标准化<br>  最后，带入模型进行训练，并测试分类效果</p>
+<h2 id="算法模型"><a href="#算法模型" class="headerlink" title="算法模型"></a>算法模型</h2><p>  未完待续</p>
+
           
         
       
@@ -906,7 +916,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
