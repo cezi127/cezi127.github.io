@@ -1,0 +1,693 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="hive," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="前言Hive是大数据工程师的一项基本技能，所以决定再通读hive的英文文档，这里做一些系统的整理。 Hive基础Hive简介hive是一种基于Hadoop的数据仓库，提供了类似SQL的语言对Hadoop的数据进行处理，文档链接。 数据类型hive主要有Databases、Tables、Partitions、Buckets四种数据单元。这四种数据单元可以类比Mysql, Databases为库，类似">
+<meta name="keywords" content="hive">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hive文档阅读笔记--基础">
+<meta property="og:url" content="http://yoursite.com/2017/06/28/hive文档阅读笔记-基础/index.html">
+<meta property="og:site_name" content="Incer">
+<meta property="og:description" content="前言Hive是大数据工程师的一项基本技能，所以决定再通读hive的英文文档，这里做一些系统的整理。 Hive基础Hive简介hive是一种基于Hadoop的数据仓库，提供了类似SQL的语言对Hadoop的数据进行处理，文档链接。 数据类型hive主要有Databases、Tables、Partitions、Buckets四种数据单元。这四种数据单元可以类比Mysql, Databases为库，类似">
+<meta property="og:updated_time" content="2017-06-28T10:17:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="hive文档阅读笔记--基础">
+<meta name="twitter:description" content="前言Hive是大数据工程师的一项基本技能，所以决定再通读hive的英文文档，这里做一些系统的整理。 Hive基础Hive简介hive是一种基于Hadoop的数据仓库，提供了类似SQL的语言对Hadoop的数据进行处理，文档链接。 数据类型hive主要有Databases、Tables、Partitions、Buckets四种数据单元。这四种数据单元可以类比Mysql, Databases为库，类似">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/06/28/hive文档阅读笔记-基础/"/>
+
+
+
+
+
+  <title>hive文档阅读笔记--基础 | Incer</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Incer</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个傻逼的啰里啰嗦</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/28/hive文档阅读笔记-基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Incer Yin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Incer">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">hive文档阅读笔记--基础</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-28T18:15:37+08:00">
+                2017-06-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><pre><code>Hive是大数据工程师的一项基本技能，所以决定再通读hive的英文文档，这里做一些系统的整理。
+</code></pre><h1 id="Hive基础"><a href="#Hive基础" class="headerlink" title="Hive基础"></a>Hive基础</h1><h2 id="Hive简介"><a href="#Hive简介" class="headerlink" title="Hive简介"></a>Hive简介</h2><p>hive是一种基于Hadoop的数据仓库，提供了类似SQL的语言对Hadoop的数据进行处理，<a href="https://cwiki.apache.org/confluence/display/Hive/Tutorial" target="_blank" rel="external">文档链接</a>。</p>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>hive主要有Databases、Tables、Partitions、Buckets四种数据单元。这四种数据单元可以类比Mysql, Databases为库，类似于抽屉，在HDFS中则为文件夹。Tables为表，在HDFS中为文件。Partitions为分区，类似KEY的功能，分区有助于数据的快速查询。<br>    Bucket（桶）这个不太熟悉，所以重点做下笔记。<br>    对于每一个表（table）或者分区， Hive可以进一步组织成桶，也就是说桶是更为细粒度的数据范围划分。Hive也是 针对某一列进行桶的组织。Hive采用对列值哈希，然后除以桶的个数求余的方式决定该条记录存放在哪个桶当中。<br>把表（或者分区）组织成桶（Bucket）有两个理由：</p>
+<p>（1）获得更高的查询处理效率。桶为表加上了额外的结构，Hive 在处理有些查询时能利用这个结构。具体而言，连接两个在（包含连接列的）相同列上划分了桶的表，可以使用 Map 端连接 （Map-side join）高效的实现。比如JOIN操作。对于JOIN操作两个表有一个相同的列，如果对这两个表都进行了桶操作。那么将保存相同列值的桶进行JOIN操作就可以，可以大大较少JOIN的数据量。</p>
+<p>（2）使取样（sampling）更高效。在处理大规模数据集时，在开发和修改查询的阶段，如果能在数据集的一小部分数据上试运行查询，会带来很多方便。</p>
+<p>举个栗子：<br>(1) 创建student &amp; student1 表<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">create</span> <span class="keyword">table</span> student(<span class="keyword">id</span> <span class="built_in">INT</span>, age <span class="built_in">INT</span>, <span class="keyword">name</span> <span class="keyword">STRING</span>)</div><div class="line">partitioned <span class="keyword">by</span>(stat_date <span class="keyword">STRING</span>) </div><div class="line">clustered <span class="keyword">by</span>(<span class="keyword">id</span>) sorted <span class="keyword">by</span>(age) <span class="keyword">into</span> <span class="number">2</span> buckets</div><div class="line"><span class="keyword">row</span> <span class="keyword">format</span> <span class="keyword">delimited</span> <span class="keyword">fields</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">','</span>;</div><div class="line"></div><div class="line"><span class="keyword">create</span> <span class="keyword">table</span> student1(<span class="keyword">id</span> <span class="built_in">INT</span>, age <span class="built_in">INT</span>, <span class="keyword">name</span> <span class="keyword">STRING</span>)</div><div class="line">partitioned <span class="keyword">by</span>(stat_date <span class="keyword">STRING</span>) </div><div class="line">clustered <span class="keyword">by</span>(<span class="keyword">id</span>) sorted <span class="keyword">by</span>(age) <span class="keyword">into</span> <span class="number">2</span> buckets</div><div class="line"><span class="keyword">row</span> <span class="keyword">format</span> <span class="keyword">delimited</span> <span class="keyword">fields</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">','</span>;</div></pre></td></tr></table></figure></p>
+<p>(2)设置环境变量<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">set</span> hive.enforce.bucketing = <span class="literal">true</span>;</div></pre></td></tr></table></figure></p>
+<p>(3)插入数据<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">cat bucket.txt</div><div class="line"></div><div class="line">1,20,zxm</div><div class="line">2,21,ljz</div><div class="line">3,19,cds</div><div class="line">4,18,mac</div><div class="line">5,22,android</div><div class="line">6,23,symbian</div><div class="line">7,25,wp</div><div class="line"></div><div class="line"><span class="keyword">LOAD</span> <span class="keyword">DATA</span> <span class="keyword">local</span> INPATH <span class="string">'/home/lijun/bucket.txt'</span> OVERWRITE <span class="keyword">INTO</span> <span class="keyword">TABLE</span> student <span class="keyword">partition</span>(stat_date=<span class="string">"20120802"</span>);</div><div class="line"></div><div class="line">from student </div><div class="line"><span class="keyword">insert</span> overwrite <span class="keyword">table</span> student1 <span class="keyword">partition</span>(stat_date=<span class="string">"20120802"</span>) </div><div class="line"><span class="keyword">select</span> <span class="keyword">id</span>,age,<span class="keyword">name</span> <span class="keyword">where</span> stat_date=<span class="string">"20120802"</span> <span class="keyword">sort</span> <span class="keyword">by</span> age;</div></pre></td></tr></table></figure></p>
+<p>hive的数据类型:integers, bool, float, string, date, binary<br>hive的复杂数据结构:点结构、Map、Arrays<br>点结构:<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">table.a table2.c</div></pre></td></tr></table></figure></p>
+<p>Map结构使用:<br>创建<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">create</span> <span class="keyword">table</span> employee(<span class="keyword">id</span> <span class="keyword">string</span>, perf <span class="keyword">map</span>&lt;<span class="keyword">string</span>, <span class="built_in">int</span>&gt;)</div><div class="line"><span class="keyword">ROW</span> <span class="keyword">FORMAT</span> <span class="keyword">DELIMITED</span></div><div class="line"><span class="keyword">FIELDS</span> <span class="keyword">TERMINATED</span> <span class="keyword">BY</span> <span class="string">'\t'</span></div><div class="line">COLLECTION ITEMS <span class="keyword">TERMINATED</span> <span class="keyword">BY</span> <span class="string">','</span></div><div class="line"><span class="keyword">MAP</span> <span class="keyword">KEYS</span> <span class="keyword">TERMINATED</span> <span class="keyword">BY</span> <span class="string">':'</span>;</div></pre></td></tr></table></figure></p>
+<p>导入<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">cat test7.txt </div><div class="line">job:80,team:60,person:70</div><div class="line">job:60,team:80</div><div class="line">job:90,team:70,person:100</div><div class="line"></div><div class="line"><span class="keyword">LOAD</span> <span class="keyword">DATA</span> <span class="keyword">LOCAL</span> INPATH <span class="string">'/home/work/data/test7.txt'</span> <span class="keyword">INTO</span> <span class="keyword">TABLE</span> employee;</div></pre></td></tr></table></figure></p>
+<p>查询<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span> perf[<span class="string">'person'</span>] <span class="keyword">from</span> employee;</div></pre></td></tr></table></figure></p>
+<p>Array结构:<br>创建<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">create</span> <span class="keyword">table</span> class_test(<span class="keyword">name</span> <span class="keyword">string</span>, student_id_list <span class="built_in">array</span>&lt;<span class="built_in">INT</span>&gt;)</div><div class="line"><span class="keyword">ROW</span> <span class="keyword">FORMAT</span> <span class="keyword">DELIMITED</span></div><div class="line"><span class="keyword">FIELDS</span> <span class="keyword">TERMINATED</span> <span class="keyword">BY</span> <span class="string">','</span></div><div class="line">COLLECTION ITEMS <span class="keyword">TERMINATED</span> <span class="keyword">BY</span> <span class="string">':'</span>;</div></pre></td></tr></table></figure></p>
+<p>导入<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">cat test6.txt</div><div class="line">034,1:2:3:4  </div><div class="line">035,5:6  </div><div class="line">036,7:8:9:10 </div><div class="line"></div><div class="line"><span class="keyword">LOAD</span> <span class="keyword">DATA</span> <span class="keyword">LOCAL</span> INPATH <span class="string">'/home/work/data/test6.txt'</span> <span class="keyword">INTO</span> <span class="keyword">TABLE</span> class_test ;</div></pre></td></tr></table></figure></p>
+<p>查询<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span> student_id_list[<span class="number">3</span>] <span class="keyword">from</span> class_test;</div></pre></td></tr></table></figure></p>
+<p>##基本函数<br>基本函数这些大部分是和SQL语言差不多的，这里记录几个自己经常要用到或者之前不是特别熟悉的函数。</p>
+<p>###字符串处理<br>A LIKE B/A RLIKE B/A REGEXP B 返回bool类型, 字符串匹配函数, rlike/regexp两个可以使用正则表达式。<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">'foobar' LIKE 'foo' false</div><div class="line">'foobar' LIKE '%foo%' true</div><div class="line">'foobar' rlike 'foo' true</div><div class="line">'foobar' rlike '^f.*r$' true</div><div class="line">#regexp同上</div></pre></td></tr></table></figure></p>
+<p>concat(string A, string B) 字符串连接函数<br>substr(string A, int start)/substr(string A, int start, int length) 字符串截断函数<br>upper(string A) 字符串改大写<br>lower(string A) 字符串改小写<br>trim(string A) 去除字符串中的空格</p>
+<p>###Table操作<br>更改表名<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> old_table_name <span class="keyword">RENAME</span> <span class="keyword">TO</span> new_table_name;</div></pre></td></tr></table></figure></p>
+<p>更改列名<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> old_table_name <span class="keyword">REPLACE</span> <span class="keyword">COLUMNS</span> (col1 <span class="keyword">TYPE</span>, ...);</div></pre></td></tr></table></figure></p>
+<p>增加列<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> tab1 <span class="keyword">ADD</span> <span class="keyword">COLUMNS</span> (c1 <span class="built_in">INT</span> <span class="keyword">COMMENT</span> <span class="string">'a new int column'</span>, c2 <span class="keyword">STRING</span> <span class="keyword">DEFAULT</span> <span class="string">'def val'</span>);</div></pre></td></tr></table></figure></p>
+<p>删除分区<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> pv_users <span class="keyword">DROP</span> <span class="keyword">PARTITION</span> (ds=<span class="string">'2008-08-08'</span>)</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/hive/" rel="tag"># hive</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/19/种子人群looklike/" rel="next" title="种子人群looklike">
+                <i class="fa fa-chevron-left"></i> 种子人群looklike
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Incer Yin" />
+          <p class="site-author-name" itemprop="name">Incer Yin</p>
+           
+              <p class="site-description motion-element" itemprop="description">Incer's Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Hive基础"><span class="nav-number">2.</span> <span class="nav-text">Hive基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Hive简介"><span class="nav-number">2.1.</span> <span class="nav-text">Hive简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据类型"><span class="nav-number">2.2.</span> <span class="nav-text">数据类型</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Incer Yin</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
