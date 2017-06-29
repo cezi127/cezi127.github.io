@@ -253,6 +253,129 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/29/hive文档阅读笔记-进阶/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Incer Yin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Incer">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/29/hive文档阅读笔记-进阶/" itemprop="url">hive文档阅读笔记--进阶</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-29T14:49:40+08:00">
+                2017-06-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这里简单介绍下常用的一些hive操作, 例如join, 行转列, 列转行, transform, 动态分区。</p>
+<h2 id="join操作"><a href="#join操作" class="headerlink" title="join操作"></a>join操作</h2><p>join操作可以实现两个表的关联查询, 通过一个或几个字段进行关联。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">INSERT</span> OVERWRITE <span class="keyword">TABLE</span> pv_users</div><div class="line"><span class="keyword">SELECT</span> pv.*, u.gender, u.age</div><div class="line"><span class="keyword">FROM</span> <span class="keyword">user</span> u <span class="keyword">JOIN</span> page_view pv <span class="keyword">ON</span> (pv.userid = u.id)</div><div class="line"><span class="keyword">WHERE</span> pv.date = <span class="string">'2008-03-03'</span>;</div></pre></td></tr></table></figure></p>
+<p>left outer join(左关联)/right outer join(右关联)/full  outer join<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">--left outer join</span></div><div class="line"><span class="keyword">INSERT</span> OVERWRITE <span class="keyword">TABLE</span> pv_users</div><div class="line"><span class="keyword">SELECT</span> pv.*, u.gender, u.age</div><div class="line"><span class="keyword">FROM</span> <span class="keyword">user</span> u <span class="keyword">LEFT</span> <span class="keyword">OUTER</span> <span class="keyword">JOIN</span> page_view pv <span class="keyword">ON</span> (pv.userid = u.id)</div><div class="line"><span class="keyword">WHERE</span> pv.date = <span class="string">'2008-03-03'</span>;</div><div class="line"><span class="comment">--right outer join</span></div><div class="line"><span class="keyword">INSERT</span> OVERWRITE <span class="keyword">TABLE</span> pv_users</div><div class="line"><span class="keyword">SELECT</span> pv.*, u.gender, u.age</div><div class="line"><span class="keyword">FROM</span> <span class="keyword">user</span> u <span class="keyword">RIGHT</span> <span class="keyword">OUTER</span> <span class="keyword">JOIN</span> page_view pv <span class="keyword">ON</span> (pv.userid = u.id)</div><div class="line"><span class="keyword">WHERE</span> pv.date = <span class="string">'2008-03-03'</span>;</div><div class="line"><span class="comment">--full outer join</span></div><div class="line"><span class="keyword">INSERT</span> OVERWRITE <span class="keyword">TABLE</span> pv_users</div><div class="line"><span class="keyword">SELECT</span> pv.*, u.gender, u.age</div><div class="line"><span class="keyword">FROM</span> <span class="keyword">user</span> u <span class="keyword">FULL</span> <span class="keyword">OUTER</span> <span class="keyword">JOIN</span> page_view pv <span class="keyword">ON</span> (pv.userid = u.id)</div><div class="line"><span class="keyword">WHERE</span> pv.date = <span class="string">'2008-03-03'</span>;</div></pre></td></tr></table></figure></p>
+<p>多表关联查询<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">INSERT</span> OVERWRITE <span class="keyword">TABLE</span> pv_friends</div><div class="line"><span class="keyword">SELECT</span> pv.*, u.gender, u.age, f.friends</div><div class="line"><span class="keyword">FROM</span> page_view pv <span class="keyword">JOIN</span> <span class="keyword">user</span> u <span class="keyword">ON</span> (pv.userid = u.id) <span class="keyword">JOIN</span> friend_list f <span class="keyword">ON</span> (u.id = f.uid)</div><div class="line"><span class="keyword">WHERE</span> pv.date = <span class="string">'2008-03-03'</span>;</div></pre></td></tr></table></figure></p>
+<h2 id="count操作"><a href="#count操作" class="headerlink" title="count操作"></a>count操作</h2><p>count(distinct a)操作<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">INSERT</span> OVERWRITE <span class="keyword">TABLE</span> pv_gender_sum</div><div class="line"><span class="keyword">SELECT</span> pv_users.gender, <span class="keyword">count</span> (<span class="keyword">DISTINCT</span> pv_users.userid)</div><div class="line"><span class="keyword">FROM</span> pv_users</div><div class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> pv_users.gender;</div></pre></td></tr></table></figure></p>
+<p>对多个列进行统计<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">INSERT</span> OVERWRITE <span class="keyword">TABLE</span> pv_gender_agg</div><div class="line"><span class="keyword">SELECT</span> pv_users.gender, <span class="keyword">count</span>(<span class="keyword">DISTINCT</span> pv_users.userid), <span class="keyword">count</span>(*), <span class="keyword">sum</span>(<span class="keyword">DISTINCT</span> pv_users.userid)</div><div class="line"><span class="keyword">FROM</span> pv_users</div><div class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> pv_users.gender;</div></pre></td></tr></table></figure></p>
+<p>一次读入一张表，同时生成多张表<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">FROM pv_users</div><div class="line"><span class="keyword">INSERT</span> OVERWRITE <span class="keyword">TABLE</span> pv_gender_sum</div><div class="line">    <span class="keyword">SELECT</span> pv_users.gender, count_distinct(pv_users.userid)</div><div class="line">    <span class="keyword">GROUP</span> <span class="keyword">BY</span> pv_users.gender</div><div class="line"> </div><div class="line"><span class="keyword">INSERT</span> OVERWRITE <span class="keyword">DIRECTORY</span> <span class="string">'/user/data/tmp/pv_age_sum'</span></div><div class="line">    <span class="keyword">SELECT</span> pv_users.age, count_distinct(pv_users.userid)</div><div class="line">    <span class="keyword">GROUP</span> <span class="keyword">BY</span> pv_users.age;</div></pre></td></tr></table></figure></p>
+<h2 id="动态分区"><a href="#动态分区" class="headerlink" title="动态分区*"></a>动态分区*</h2><p>动态分区可以实现扫描一张大表，同时插入多个分区<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">FROM page_view_stg pvs</div><div class="line"><span class="keyword">INSERT</span> OVERWRITE <span class="keyword">TABLE</span> page_view <span class="keyword">PARTITION</span>(dt=<span class="string">'2008-06-08'</span>, country=<span class="string">'US'</span>)</div><div class="line">       <span class="keyword">SELECT</span> pvs.viewTime, pvs.userid, pvs.page_url, pvs.referrer_url, <span class="literal">null</span>, <span class="literal">null</span>, pvs.ip <span class="keyword">WHERE</span> pvs.country = <span class="string">'US'</span></div><div class="line"><span class="keyword">INSERT</span> OVERWRITE <span class="keyword">TABLE</span> page_view <span class="keyword">PARTITION</span>(dt=<span class="string">'2008-06-08'</span>, country=<span class="string">'CA'</span>)</div><div class="line">       <span class="keyword">SELECT</span> pvs.viewTime, pvs.userid, pvs.page_url, pvs.referrer_url, <span class="literal">null</span>, <span class="literal">null</span>, pvs.ip <span class="keyword">WHERE</span> pvs.country = <span class="string">'CA'</span></div><div class="line"><span class="keyword">INSERT</span> OVERWRITE <span class="keyword">TABLE</span> page_view <span class="keyword">PARTITION</span>(dt=<span class="string">'2008-06-08'</span>, country=<span class="string">'UK'</span>)</div><div class="line">       <span class="keyword">SELECT</span> pvs.viewTime, pvs.userid, pvs.page_url, pvs.referrer_url, <span class="literal">null</span>, <span class="literal">null</span>, pvs.ip <span class="keyword">WHERE</span> pvs.country = <span class="string">'UK'</span>;</div></pre></td></tr></table></figure></p>
+<h2 id="从本地导入hive"><a href="#从本地导入hive" class="headerlink" title="从本地导入hive"></a>从本地导入hive</h2><p>这里介绍一种外部表的方法<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">INSERT</span> OVERWRITE <span class="keyword">LOCAL</span> <span class="keyword">DIRECTORY</span> <span class="string">'/tmp/pv_gender_sum'</span></div><div class="line"><span class="keyword">SELECT</span> pv_gender_sum.*</div><div class="line"><span class="keyword">FROM</span> pv_gender_sum;</div></pre></td></tr></table></figure></p>
+<h2 id="分桶表抽样"><a href="#分桶表抽样" class="headerlink" title="分桶表抽样"></a>分桶表抽样</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">INSERT</span> OVERWRITE <span class="keyword">TABLE</span> pv_gender_sum_sample</div><div class="line"><span class="keyword">SELECT</span> pv_gender_sum.*</div><div class="line"><span class="keyword">FROM</span> pv_gender_sum TABLESAMPLE(BUCKET <span class="number">3</span> <span class="keyword">OUT</span> <span class="keyword">OF</span> <span class="number">32</span>);</div><div class="line"></div><div class="line">TABLESAMPLE(BUCKET x OUT OF y)</div></pre></td></tr></table></figure>
+<h2 id="Hive中使用Map-Reduce"><a href="#Hive中使用Map-Reduce" class="headerlink" title="Hive中使用Map/Reduce"></a>Hive中使用Map/Reduce</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">FROM (</div><div class="line">     FROM pv_users</div><div class="line">     MAP pv_users.userid, pv_users.date</div><div class="line">     USING 'map_script'</div><div class="line">     AS dt, uid</div><div class="line">     CLUSTER BY dt) map_output</div><div class="line"> </div><div class="line"> <span class="keyword">INSERT</span> OVERWRITE <span class="keyword">TABLE</span> pv_users_reduced</div><div class="line">     REDUCE map_output.dt, map_output.uid</div><div class="line">     <span class="keyword">USING</span> <span class="string">'reduce_script'</span></div><div class="line">     <span class="keyword">AS</span> <span class="built_in">date</span>, <span class="keyword">count</span>;</div></pre></td></tr></table></figure>
+<h2 id="Hive使用transform"><a href="#Hive使用transform" class="headerlink" title="Hive使用transform"></a>Hive使用transform</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span> TRANSFORM(pv_users.userid, pv_users.date) </div><div class="line"><span class="keyword">USING</span> <span class="string">'map_script'</span> </div><div class="line"><span class="keyword">AS</span> dt, uid CLUSTER <span class="keyword">BY</span> dt </div><div class="line"><span class="keyword">FROM</span> pv_users;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/28/hive文档阅读笔记-基础/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1037,7 +1160,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
